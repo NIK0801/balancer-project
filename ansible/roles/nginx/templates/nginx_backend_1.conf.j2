@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    server_name backend1;
+
+    location / {
+        add_header Content-Type text/html;
+        return 200 '<html><body><h1>Backend 1</h1></body></html>';
+    }
+}

@@ -1,0 +1,33 @@
+---
+- name: Настройка бэкенд-серверов
+  hosts: backend_servers
+  become: yes
+  tasks:
+    - name: Установить Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Включить Nginx в автозагрузку
+      service:
+        name: nginx
+        enabled: yes
+        state: started
+
+    - name: Создать конфигурационный файл Nginx для бэкенда 1
+      template:
+        src: templates/nginx_backend_1.conf.j2
+        dest: /etc/nginx/conf.d/backend1.conf
+      when: inventory_hostname == 'backend_1'
+
+    - name: Создать конфиг Nginx для бэкенда 2
+      template:
+        src: templates/nginx_backend_2.conf.j2
+        dest: /etc/nginx/conf.d/backend2.conf
+      when: inventory_hostname == 'backend_2'
+
+    - name: Перезапустить Nginx
+      systemd:
+        name: nginx
+        state: restarted
+        enabled: yes

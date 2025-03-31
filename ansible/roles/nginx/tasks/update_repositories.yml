@@ -1,0 +1,8 @@
+- name: Обновление репозиториев и пакетов
+  hosts: all
+  become: yes
+  tasks:
+    - name: Установить репозиторий EPEL (для CentOS)
+      yum:
+        name: epel-release
+        state: present
